@@ -30,11 +30,19 @@ func (s *testSyncerSuite) TestNewSyncer(c *check.C) {
 			"print",
 			reflect.TypeOf(new(MemSyncer)),
 			check.Not(check.Equals),
+		}, {
+			"sql",
+			reflect.TypeOf(new(sqlSyncer)),
+			check.Equals,
+		}, {
+			"flashback",
+			reflect.TypeOf(new(flashbackSyncer)),
+			check.Equals,
 		},
 	}
 
 	for _, testCase := range testCases {
-		syncer, err := New(testCase.typeStr, cfg, 16, 20, false)
+		syncer, err := New(testCase.typeStr, "", cfg, 16, 20, false)
 		c.Assert(err, check.IsNil)
 		c.Assert(reflect.TypeOf(syncer), testCase.checker, testCase.tp)
 	}

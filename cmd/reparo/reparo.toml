@@ -15,9 +15,13 @@ log-level = "info"
 # start-tso = 0 
 # stop-tso = 0
 
-# dest-type choose a destination, which value can be "mysql", "print". 
+# dest-type choose a destination, which value can be "mysql", "print", "sql", "flashback".
 # for print, it just prints decoded value.
-dest-type = "mysql"
+# for sql, it write sqls to a file for replay
+# for flashback, it write sqls to a file for flashback
+# if dest-sql-file is empty, sql will write to stdout
+dest-type = "flashback"
+dest-sql-file = "flashback.sql"
 
 # number of binlog events in a transaction batch
 txn-batch = 20
@@ -53,3 +57,5 @@ host = "127.0.0.1"
 port = 3309
 user = "root"
 password = ""
+
+

@@ -19,7 +19,6 @@ func (s *testPrintSuite) TestPrintSyncer(c *check.C) {
 	out := capturer.CaptureStdout(func() {
 		syncTest(c, Syncer(syncer))
 	})
-
 	c.Assert(out, check.Equals,
 		"DDL query: create database test;\n"+
 			"schema: test; table: t1; type: Insert\n"+

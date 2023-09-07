@@ -47,8 +47,9 @@ type Config struct {
 	TxnBatch      int    `toml:"txn-batch" json:"txn-batch"`
 	WorkerCount   int    `toml:"worker-count" json:"worker-count"`
 
-	DestType string           `toml:"dest-type" json:"dest-type"`
-	DestDB   *syncer.DBConfig `toml:"dest-db" json:"dest-db"`
+	DestType    string           `toml:"dest-type" json:"dest-type"`
+	DestSqlFile string           `toml:"dest-sql-file" json:"dest-sql-file"`
+	DestDB      *syncer.DBConfig `toml:"dest-db" json:"dest-db"`
 
 	DoTables []filter.TableName `toml:"replicate-do-table" json:"replicate-do-table"`
 	DoDBs    []string           `toml:"replicate-do-db" json:"replicate-do-db"`
@@ -82,7 +83,8 @@ func NewConfig() *Config {
 	fs.IntVar(&c.TxnBatch, "txn-batch", 20, "number of binlog events in a transaction batch")
 	fs.IntVar(&c.WorkerCount, "c", 16, "parallel worker count")
 	fs.StringVar(&c.LogFile, "log-file", "", "log file path")
-	fs.StringVar(&c.DestType, "dest-type", "print", "dest type, values can be [print,mysql]")
+	fs.StringVar(&c.DestType, "dest-type", "print", "dest type, values can be [print,mysql,sql,flashback]")
+	fs.StringVar(&c.DestSqlFile, "dest-sql-file", "", "dest sql file, required when dest-type=sql/flashback, sql will output to stdout if empty")
 	fs.StringVar(&c.LogLevel, "L", "info", "log level: debug, info, warn, error, fatal")
 	fs.StringVar(&c.configFile, "config", "", "[REQUIRED] path to configuration file")
 	fs.BoolVar(&c.printVersion, "V", false, "print reparo version info")
@@ -189,6 +191,10 @@ func (c *Config) validate() error {
 		}
 		return nil
 	case "print":
+		return nil
+	case "sql":
+		return nil
+	case "flashback":
 		return nil
 	case "memory":
 		return nil
